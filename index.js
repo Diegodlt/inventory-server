@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 
 const errorHandler = require('./handlers/error');
 const authRoutes = require('./routes/auth')
+const ingredientsRoutes = require('./routes/ingredients')
+const { loginRequired, ensureCorrectUser } = require('./middleware/check-auth');
 
 const PORT = 3200;
 
@@ -17,6 +19,11 @@ app.get('/', (req, res)=>{
 });
 
 app.use('/api/auth', authRoutes)
+app.use(
+    '/api/users/:id/ingredients', 
+    loginRequired,
+    ensureCorrectUser,
+    ingredientsRoutes);
 
 app.use((req, res, next)=>{
     let err = new Error("Not Found");

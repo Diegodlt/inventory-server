@@ -15,7 +15,10 @@ exports.signin = async function(req, res, next){
                     username,
                     email
                 },
-                process.env.SECRET_KEY
+                process.env.SECRET_KEY,
+                {
+                    expiresIn: "1h",
+                }
             );
             return res.status(200).json({
                 id,
