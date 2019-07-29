@@ -24,6 +24,7 @@ exports.signin = async function(req, res, next){
                 id,
                 username,
                 email,
+                expiresIn: 3600,
                 token
             });
         }else{
