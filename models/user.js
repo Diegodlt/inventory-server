@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Restaurant = require('./restaurant');
 
 const userSchema = new mongoose.Schema({
     email:{
@@ -14,7 +15,13 @@ const userSchema = new mongoose.Schema({
     password:{
         type: String,
         required: true
-    }
+    },
+    restaurants: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Restaurant"
+        }
+    ]
 });
 
 userSchema.pre('save', async function(next){

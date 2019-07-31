@@ -5,8 +5,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const errorHandler = require('./handlers/error');
-const authRoutes = require('./routes/auth')
-const ingredientsRoutes = require('./routes/ingredients')
+const authRoutes = require('./routes/auth');
+const ingredientsRoutes = require('./routes/ingredients');
+const restaurantRoutes = require('./routes/restaurants');
 const { loginRequired, ensureCorrectUser } = require('./middleware/check-auth');
 
 const PORT = 3200;
@@ -18,12 +19,21 @@ app.get('/', (req, res)=>{
     res.send("Hello World!");
 });
 
-app.use('/api/auth', authRoutes)
+app.use('/api/auth', authRoutes);
+
 app.use(
     '/api/users/:id/ingredients', 
     loginRequired,
     ensureCorrectUser,
-    ingredientsRoutes);
+    ingredientsRoutes
+);
+
+app.use(
+    '/api/users/:id/restaurants',
+    loginRequired,
+    ensureCorrectUser,
+    restaurantRoutes
+);
 
 app.use((req, res, next)=>{
     let err = new Error("Not Found");
