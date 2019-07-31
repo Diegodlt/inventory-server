@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Restaurant = require('./restaurant');
 
+/*
+    Todo: Make unique email a requirement
+*/
+
 const userSchema = new mongoose.Schema({
     email:{
         type: String,
         required: true,
         unique: true
-    },
-    username:{
-        type: String,
-        required: true
     },
     password:{
         type: String,
@@ -39,9 +39,8 @@ userSchema.pre('save', async function(next){
 
 userSchema.methods.comparePassword = async function(candidatePassword, next){
     try{
-        // let isMatch = await bcrypt.compare(candidatePassword, this.password);
-        console.log(this.password);
-        return candidatePassword === this.password;
+        let isMatch = await bcrypt.compare(candidatePassword, this.password);
+        return isMatch;
     }catch(err){
         return next(err);
     }
