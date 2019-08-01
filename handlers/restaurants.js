@@ -1,12 +1,24 @@
 const db = require('../models');
 
+/*
+    ! Do not user forEach loops in async functions
+*/
+
 // Get all of the restaurants for this user
 // GET/api/users/:id/restaurants
 exports.getRestaurants = async function(req, res, next){
     try{
         let foundUser = await db.User.findById(req.params.id);
-        console.log(foundUser)
-        return res.status(200).json(foundUser);
+        let returnObject = [];
+        for(const restaurantId of foundUser.restaurants){
+            let restaurant = await db.Restaurant.findById(restaurantId)
+            console.log("FOUND", restaurant)
+            returnObject.push({
+                name: restaurant.name,
+                id: restaurantId
+            });
+        }
+        return res.status(200).json(returnObject);
     }catch(err){
         console.log(err);
     }
@@ -17,6 +29,7 @@ exports.getRestaurants = async function(req, res, next){
 // Create a new restaurant
 // POST/api/users/:id/restaurants name=<nameOfRestaurant>
 exports.createRestaurant = async function(req, res, next){
+    console.log(req.body)
     try{
         let restaurant = await db.Restaurant.create({
             name: req.body.name
