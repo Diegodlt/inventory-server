@@ -22,17 +22,17 @@ app.get('/', (req, res)=>{
 app.use('/api/auth', authRoutes);
 
 app.use(
-    '/api/users/:id/ingredients', 
-    loginRequired,
-    ensureCorrectUser,
-    ingredientsRoutes
-);
-
-app.use(
     '/api/users/:id/restaurants',
     loginRequired,
     ensureCorrectUser,
     restaurantRoutes
+);
+
+app.use(
+    '/api/users/:id/:restaurantId/ingredients', 
+    loginRequired,
+    ensureCorrectUser,
+    ingredientsRoutes
 );
 
 app.use((req, res, next)=>{
