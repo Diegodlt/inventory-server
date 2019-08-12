@@ -9,6 +9,19 @@ const ingredientSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    price:{
+        type: Number,
+        default: 0.0,
+        required: true
+    },
+    quantity:{
+        type: Number,
+        default: 0,
+        required: true
+        /* 
+            Todo: create validator, number can't be negative
+        */
+    },
     picture:{
         type: String //URL
         // Default: <some default url>

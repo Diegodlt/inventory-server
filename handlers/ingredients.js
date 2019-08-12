@@ -28,10 +28,18 @@ exports.createIngredient = async function(req, res, next){
     try{
         console.log("CREATE INGREDIENT");
         console.log(req.body);
-       let {name, measurement} = req.body;
+       let {name, measurement, quantity, price} = req.body;
+       if(!quantity){
+           quantity = 0;
+       }
+       if(!price){
+           price = 0.0;
+       }
        let ingredient = await db.Ingredient.create({
            name,
            measurement,
+           quantity,
+           price,
            restaurantId: req.params.restaurantId
        });
     //    let restaurant = await db.Restaurant.findById(req.params.restaurantId);
