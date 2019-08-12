@@ -34,7 +34,7 @@ exports.createRestaurant = async function(req, res, next){
         let restaurant = await db.Restaurant.create({
             name: req.body.name
         });
-        restaurant.user.push(req.params.id);
+        restaurant.users.push(req.params.id);
         await restaurant.save()
 
         let foundUser = await db.User.findById(req.params.id);

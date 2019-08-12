@@ -13,6 +13,10 @@ const ingredientSchema = new mongoose.Schema({
         type: String //URL
         // Default: <some default url>
     },
+    restaurantId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Restaurant"
+    }
 });
 
 const Ingredient = mongoose.model('Ingredient', ingredientSchema);

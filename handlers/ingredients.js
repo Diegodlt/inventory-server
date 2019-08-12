@@ -1,5 +1,9 @@
 const db = require('../models');
 
+/*
+    Todo: figure out how to authenticate collections not directly associated with the user
+*/
+
 exports.getIngredients = async function(req, res, next){
     try{
         let userId = req.params.id;
@@ -9,9 +13,34 @@ exports.getIngredients = async function(req, res, next){
         if(!user.restaurants.includes(restaurantId)){
             return next({status: 401, message:"Unauthorized"})
         }
-        let restaurant = db.Restaurant.findById(restaurantId);
-        return res.status(200).json("Get ingredients worked")
+        let restaurant = await db.Restaurant.findById(restaurantId);
+        let restaurantName = restaurant.name;
+
+        let ingredients = await db.Ingredient.find({restaurantId});
+
+        return res.status(200).json({restaurantName, ingredients})
     }catch(err){
 
+    }
+}
+
+exports.createIngredient = async function(req, res, next){
+    try{
+        console.log("CREATE INGREDIENT");
+        console.log(req.body);
+       let {name, measurement} = req.body;
+       let ingredient = await db.Ingredient.create({
+           name,
+           measurement,
+           restaurantId: req.params.restaurantId
+       });
+    //    let restaurant = await db.Restaurant.findById(req.params.restaurantId);
+    //    console.log(restaurant);
+    //    restaurant.ingredients.push(ingredient.id);
+    //    await restaurant.save()
+       
+       return res.status(200).json(ingredient);
+    }catch(err){
+        console.log(err);
     }
 }
